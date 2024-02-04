@@ -28,8 +28,8 @@ public class User
 
     public static User convert(UserDTO userDTO) {
         User user = new User();
-        user.setSenha(userDTO.getSenha());
         user.setEmail(userDTO.getEmail());
+        user.setSenha(userDTO.getSenha());
         user.setDataCadastro(userDTO.getDataCadastro());
         return user;
     }
