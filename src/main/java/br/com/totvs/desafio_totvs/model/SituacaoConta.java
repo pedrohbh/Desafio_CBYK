@@ -1,5 +1,6 @@
 package br.com.totvs.desafio_totvs.model;
 
+import br.com.totvs.desafio_totvs.dto.SituacaoContaDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,4 +21,9 @@ public class SituacaoConta
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short id;
     private String nomeSituacao;
+
+    public static SituacaoConta convert(SituacaoContaDTO situacaoContaDTO)
+    {
+        return null;
+    }
 }
