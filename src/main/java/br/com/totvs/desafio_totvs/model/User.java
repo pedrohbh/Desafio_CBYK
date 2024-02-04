@@ -1,5 +1,6 @@
 package br.com.totvs.desafio_totvs.model;
 
+import br.com.totvs.desafio_totvs.dto.UserDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,5 +25,13 @@ public class User
     private String email;
     private String senha;
     private LocalDateTime dataCadastro;
+
+    public static User convert(UserDTO userDTO) {
+        User user = new User();
+        user.setSenha(userDTO.getSenha());
+        user.setEmail(userDTO.getEmail());
+        user.setDataCadastro(userDTO.getDataCadastro());
+        return user;
+    }
 
 }
