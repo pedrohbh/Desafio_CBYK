@@ -1,9 +1,6 @@
 package br.com.totvs.desafio_totvs.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +23,10 @@ public class Conta
     private LocalDate dataPagamento;
     private BigDecimal valor;
     private String descricao;
+
+    @ManyToOne
+    @JoinColumn(name = "situacao_conta_id")
+    private SituacaoConta situacaoConta;
 
 
 }
