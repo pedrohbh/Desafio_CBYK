@@ -20,19 +20,16 @@ public class UserController
     public void initiateList()
     {
         UserDTO userDTO = new UserDTO();
-        userDTO.setNome("Eduardo");
         userDTO.setEmail("edurado@email.com");
         userDTO.setSenha("123");
         userDTO.setDataCadastro(LocalDateTime.now());
 
         UserDTO userDTO2 = new UserDTO();
-        userDTO2.setNome("Luiz");
         userDTO2.setEmail("luiz@email.com");
         userDTO2.setSenha("456");
         userDTO2.setDataCadastro(LocalDateTime.now());
 
         UserDTO userDTO3 = new UserDTO();
-        userDTO3.setNome("Bruna");
         userDTO3.setEmail("bruna@email.com");
         userDTO3.setSenha("789");
         userDTO3.setDataCadastro(LocalDateTime.now());
