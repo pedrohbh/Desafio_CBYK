@@ -24,6 +24,9 @@ public class SituacaoConta
 
     public static SituacaoConta convert(SituacaoContaDTO situacaoContaDTO)
     {
-        return null;
+        SituacaoConta situacaoConta = new SituacaoConta();
+        situacaoConta.setId(situacaoContaDTO.getId());
+        situacaoConta.setNomeSituacao(situacaoContaDTO.getNomeSituacao());
+        return situacaoConta;
     }
 }
