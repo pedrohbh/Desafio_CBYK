@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ContaDTO
 {
+    private long id;
     private LocalDate dataVencimento;
     private LocalDate dataPagamento;
     private BigDecimal valor;
@@ -26,6 +27,7 @@ public class ContaDTO
     public static ContaDTO convert(Conta conta)
     {
         ContaDTO contaDTO = new ContaDTO();
+        contaDTO.setId(conta.getId());
         contaDTO.setDataVencimento(conta.getDataVencimento());
         contaDTO.setDataPagamento(conta.getDataPagamento());
         contaDTO.setDescricao(conta.getDescricao());
