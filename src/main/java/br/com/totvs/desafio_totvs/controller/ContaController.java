@@ -69,6 +69,7 @@ public class ContaController
         return contaService.getContaTotalByDate(dataInicio, dataFim);
     }
 
+    @PostMapping("/upload")
     public List<ContaDTO> uploadData(@RequestParam("file") MultipartFile file)
     {
         if (CSVHelper.hasCSVFormat(file))

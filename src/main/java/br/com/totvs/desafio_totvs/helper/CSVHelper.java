@@ -20,7 +20,7 @@ import java.util.List;
 public class CSVHelper
 {
     public static String TYPE = "text/csv";
-    static String[] HEADERS = { "Data Vencimento", "Data Pagamento", "Valor", "Descrição", "Situação" };
+    static String[] HEADERS = { "data_vencimento", "data_pagamento", "valor", "descricao", "situacao_conta_id" };
 
     public static boolean hasCSVFormat(MultipartFile file) {
 
@@ -43,13 +43,13 @@ public class CSVHelper
 
             for (CSVRecord csvRecord : csvRecords) {
                 Conta conta = new Conta();
-                conta.setDataVencimento(LocalDate.parse(csvRecord.get("Data Vencimento")));
-                conta.setDataPagamento(LocalDate.parse(csvRecord.get("Data Pagamento")));
-                conta.setValor(new BigDecimal(csvRecord.get("Valor")));
-                conta.setDescricao(csvRecord.get("Descrição"));
+                conta.setDataVencimento(LocalDate.parse(csvRecord.get("data_vencimento")));
+                conta.setDataPagamento(LocalDate.parse(csvRecord.get("data_pagamento")));
+                conta.setValor(new BigDecimal(csvRecord.get("valor")));
+                conta.setDescricao(csvRecord.get("descricao"));
 
                 SituacaoConta situacaoConta = new SituacaoConta();
-                situacaoConta.setId(Short.parseShort(csvRecord.get("Situação")));
+                situacaoConta.setId(Short.parseShort(csvRecord.get("situacao_conta_id")));
                 conta.setSituacaoConta(situacaoConta);
                 conta.setDataCadastro(LocalDateTime.now());
 
