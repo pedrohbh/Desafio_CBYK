@@ -30,6 +30,7 @@ public class ContaDTO
         contaDTO.setDataPagamento(conta.getDataPagamento());
         contaDTO.setDescricao(conta.getDescricao());
         contaDTO.setDataCadastro(conta.getDataCadastro());
+        contaDTO.setValor(conta.getValor());
         if ( conta.getSituacaoConta() != null )
         {
             contaDTO.setSituacaoConta(SituacaoContaDTO.convert(conta.getSituacaoConta()));

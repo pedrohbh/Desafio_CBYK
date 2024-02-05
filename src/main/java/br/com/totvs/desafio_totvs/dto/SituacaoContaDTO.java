@@ -18,7 +18,20 @@ public class SituacaoContaDTO
     {
         SituacaoContaDTO situacaoContaDTO = new SituacaoContaDTO();
         situacaoContaDTO.setId(situacaoConta.getId());
-        situacaoContaDTO.setNomeSituacao(situacaoConta.getNomeSituacao());
+        String nomeSituacao = null;
+        if ( situacaoConta.getId() == 1 )
+        {
+            nomeSituacao = "Pago";
+        }
+        else if ( situacaoConta.getId() == 2)
+        {
+            nomeSituacao = "Aberto";
+        }
+        else
+        {
+            nomeSituacao = "Em atraso";
+        }
+        situacaoContaDTO.setNomeSituacao(nomeSituacao);
         return situacaoContaDTO;
     }
 }
