@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +35,12 @@ public class ContaService
     {
         List<Conta> contas = contaRepository.getContasBySituacaoConta(situacaoContaId);
         return contas.stream().map(ContaDTO::convert).collect(Collectors.toList());
+    }
+
+    public ContaDTO findContaById(long id)
+    {
+        Optional<Conta> conta = contaRepository.findById(id);
+        return conta.map(ContaDTO::convert).orElse(null);
     }
 
     public ContaDTO editConta(long id, ContaDTO contaDTO)
