@@ -27,6 +27,12 @@ public class ContaService
     private final ContaRepository contaRepository;
     private final SituacaoContaRepository situacaoContaRepository;
 
+    public void delete(long contaId)
+    {
+        Optional<Conta> conta = contaRepository.findById(contaId);
+        conta.ifPresent(contaRepository::delete);
+    }
+
     public List<ContaDTO> saveByCSV(MultipartFile file)
     {
         try

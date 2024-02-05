@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +33,19 @@ public class ContaController
     public ContaDTO buscaContaPorId(@PathVariable Long id)
     {
         return contaService.findContaById(id);
+    }
+
+    @GetMapping("/status/{statusId}")
+    public List<ContaDTO> buscaPorStatusConta(@PathVariable Short statusId)
+    {
+        return contaService.getContasBySituacaoContaId(statusId);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void excluiConta(@PathVariable Long id)
+    {
+        contaService.delete(id);
     }
 
     @PostMapping
