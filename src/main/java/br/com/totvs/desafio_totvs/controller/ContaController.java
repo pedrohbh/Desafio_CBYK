@@ -77,7 +77,7 @@ public class ContaController
         }
         else
         {
-            throw new RuntimeException("Formato de Arquivo inválido")
+            throw new RuntimeException("Formato de Arquivo inválido");
         }
     }
 }
