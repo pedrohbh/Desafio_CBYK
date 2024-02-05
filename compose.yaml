@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: banco_totvs
+      POSTGRES_PASSWORD: postgres
+  desafio:
+    image: totvs/desafio_totvs
+    ports:
+      - 8080:8080
+    depends_on: postgres
