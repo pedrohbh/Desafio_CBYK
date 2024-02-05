@@ -4,6 +4,7 @@ import br.com.totvs.desafio_totvs.dto.ContaDTO;
 import br.com.totvs.desafio_totvs.model.Conta;
 import br.com.totvs.desafio_totvs.model.SituacaoConta;
 import br.com.totvs.desafio_totvs.repository.ContaRepository;
+import br.com.totvs.desafio_totvs.repository.SituacaoContaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class ContaService
 {
     private final ContaRepository contaRepository;
+    private final SituacaoContaRepository situacaoContaRepository;
 
     public Page<ContaDTO> getAll(Pageable page)
     {
@@ -43,6 +45,14 @@ public class ContaService
     {
         Optional<Conta> conta = contaRepository.findById(id);
         return conta.map(ContaDTO::convert).orElse(null);
+    }
+
+    public  ContaDTO editSituacaoConta(long idConta, short idSituacao)
+    {
+        Conta conta = contaRepository.findById(idConta).orElseThrow(() -> new RuntimeException("Conta não encontrada"));
+        SituacaoConta situacaoConta = situacaoContaRepository.findById(idSituacao).orElseThrow(() -> new RuntimeException("Id de Categoria não existente"));
+        conta.setSituacaoConta(situacaoConta);
+        return ContaDTO.convert(contaRepository.save(conta));
     }
 
     public ContaDTO editConta(long id, ContaDTO contaDTO)

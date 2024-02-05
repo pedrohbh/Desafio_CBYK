@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @RestController
 @RequestMapping("/contas")
 @RequiredArgsConstructor
@@ -35,9 +33,15 @@ public class ContaController
         return contaService.save(contaDTO);
     }
 
-    @PostMapping("{id}")
+    @PostMapping("/{id}")
     public ContaDTO editarConta(@PathVariable Long id, @RequestBody ContaDTO contaDTO)
     {
         return contaService.editConta(id, contaDTO);
+    }
+
+    @PostMapping("/situacao/{idConta}/{idSituacaoConta}")
+    public ContaDTO editarSituacaoConta(@PathVariable Long idConta, @PathVariable Short idSituacaoConta)
+    {
+        return contaService.editSituacaoConta(idConta, idSituacaoConta);
     }
 }
