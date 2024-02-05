@@ -2,12 +2,14 @@ package br.com.totvs.desafio_totvs.controller;
 
 import br.com.totvs.desafio_totvs.dto.ContaDTO;
 import br.com.totvs.desafio_totvs.dto.ContaReportDTO;
+import br.com.totvs.desafio_totvs.helper.CSVHelper;
 import br.com.totvs.desafio_totvs.service.ContaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -65,5 +67,17 @@ public class ContaController
     public ContaReportDTO getTotalPorData(@RequestParam(name = "dataInicio", required=true) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio, @RequestParam(name = "dataFim", required=true)@DateTimeFormat(pattern = "dd/MM/yyyy")LocalDate dataFim)
     {
         return contaService.getContaTotalByDate(dataInicio, dataFim);
+    }
+
+    public List<ContaDTO> uploadData(@RequestParam("file") MultipartFile file)
+    {
+        if (CSVHelper.hasCSVFormat(file))
+        {
+                return contaService.saveByCSV(file);
+        }
+        else
+        {
+            throw new RuntimeException("Formato de Arquivo inválido")
+        }
     }
 }

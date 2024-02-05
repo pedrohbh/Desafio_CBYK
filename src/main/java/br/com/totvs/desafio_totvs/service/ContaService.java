@@ -2,6 +2,7 @@ package br.com.totvs.desafio_totvs.service;
 
 import br.com.totvs.desafio_totvs.dto.ContaDTO;
 import br.com.totvs.desafio_totvs.dto.ContaReportDTO;
+import br.com.totvs.desafio_totvs.helper.CSVHelper;
 import br.com.totvs.desafio_totvs.model.Conta;
 import br.com.totvs.desafio_totvs.model.SituacaoConta;
 import br.com.totvs.desafio_totvs.repository.ContaRepository;
@@ -10,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +26,19 @@ public class ContaService
 {
     private final ContaRepository contaRepository;
     private final SituacaoContaRepository situacaoContaRepository;
+
+    public List<ContaDTO> saveByCSV(MultipartFile file)
+    {
+        try
+        {
+            List<Conta> contas = CSVHelper.csvToTutorials(file.getInputStream());
+            contaRepository.saveAll(contas);
+            return contas.stream().map(ContaDTO::convert).collect(Collectors.toList());
+        } catch (IOException e)
+        {
+            throw new RuntimeException("Erro ao salvar arquivo csv: " + e.getMessage());
+        }
+    }
 
 
     public List<ContaDTO> getContasByFilter(LocalDate dataVencimento, String descricao)
