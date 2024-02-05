@@ -11,4 +11,9 @@ services:
     image: totvs/desafio_totvs
     ports:
       - 8080:8080
-    depends_on: postgres
+    environment:
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/banco_totvs
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    depends_on:
+      - postgres
