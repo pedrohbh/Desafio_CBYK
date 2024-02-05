@@ -1,6 +1,7 @@
 package br.com.totvs.desafio_totvs.helper;
 
 import br.com.totvs.desafio_totvs.model.Conta;
+import br.com.totvs.desafio_totvs.model.SituacaoConta;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -10,6 +11,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,24 +37,26 @@ public class CSVHelper
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());)
         {
 
-            List<Conta> tutorials = new ArrayList<Conta>();
+            List<Conta> contas = new ArrayList<Conta>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
             for (CSVRecord csvRecord : csvRecords) {
+                Conta conta = new Conta();
+                conta.setDataVencimento(LocalDate.parse(csvRecord.get("Data Vencimento")));
+                conta.setDataPagamento(LocalDate.parse(csvRecord.get("Data Pagamento")));
+                conta.setValor(new BigDecimal(csvRecord.get("Valor")));
+                conta.setDescricao(csvRecord.get("Descrição"));
 
-                /*Tutorial tutorial = new Tutorial(
-                        Long.parseLong(csvRecord.get("Id")),
-                        csvRecord.get("Title"),
-                        csvRecord.get("Description"),
-                        Boolean.parseBoolean(csvRecord.get("Published"))
-                );
+                SituacaoConta situacaoConta = new SituacaoConta();
+                situacaoConta.setId(Short.parseShort(csvRecord.get("Situação")));
+                conta.setSituacaoConta(situacaoConta);
+                conta.setDataCadastro(LocalDateTime.now());
 
-                tutorials.add(tutorial);*/
-                int a = 1;
+                contas.add(conta);
             }
 
-            return tutorials;
+            return contas;
         } catch (IOException e) {
             throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
         }
