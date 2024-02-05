@@ -86,7 +86,7 @@ public class ContaControllerTest
 
 
 
-    private static Conta getConta(long id, String descricao, double valor, short categoriaId)
+    public static Conta getConta(long id, String descricao, double valor, short categoriaId)
     {
         Conta conta = new Conta();
         conta.setId(id);
