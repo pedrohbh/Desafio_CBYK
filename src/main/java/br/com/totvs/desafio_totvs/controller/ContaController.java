@@ -5,7 +5,11 @@ import br.com.totvs.desafio_totvs.service.ContaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/contas")
@@ -43,5 +47,16 @@ public class ContaController
     public ContaDTO editarSituacaoConta(@PathVariable Long idConta, @PathVariable Short idSituacaoConta)
     {
         return contaService.editSituacaoConta(idConta, idSituacaoConta);
+    }
+
+
+    @GetMapping("/search")
+    public List<ContaDTO> getContasByFilter(@RequestParam(name = "dataVencimento", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataVencimento, @RequestParam(name = "descricao", required = false) String descricao)
+    {
+        if ( dataVencimento == null && descricao == null)
+        {
+            return  null;
+        }
+        return contaService.getContasByFilter(dataVencimento, descricao);
     }
 }
