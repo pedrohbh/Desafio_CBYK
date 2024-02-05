@@ -1,6 +1,7 @@
 package br.com.totvs.desafio_totvs.controller;
 
 import br.com.totvs.desafio_totvs.dto.ContaDTO;
+import br.com.totvs.desafio_totvs.dto.ContaReportDTO;
 import br.com.totvs.desafio_totvs.service.ContaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -58,5 +59,11 @@ public class ContaController
             return  null;
         }
         return contaService.getContasByFilter(dataVencimento, descricao);
+    }
+
+    @GetMapping("/total")
+    public ContaReportDTO getTotalPorData(@RequestParam(name = "dataInicio", required=true) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio, @RequestParam(name = "dataFim", required=true)@DateTimeFormat(pattern = "dd/MM/yyyy")LocalDate dataFim)
+    {
+        return contaService.getContaTotalByDate(dataInicio, dataFim);
     }
 }

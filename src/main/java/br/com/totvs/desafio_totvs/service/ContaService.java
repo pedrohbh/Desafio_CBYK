@@ -1,6 +1,7 @@
 package br.com.totvs.desafio_totvs.service;
 
 import br.com.totvs.desafio_totvs.dto.ContaDTO;
+import br.com.totvs.desafio_totvs.dto.ContaReportDTO;
 import br.com.totvs.desafio_totvs.model.Conta;
 import br.com.totvs.desafio_totvs.model.SituacaoConta;
 import br.com.totvs.desafio_totvs.repository.ContaRepository;
@@ -28,6 +29,11 @@ public class ContaService
     {
         List<Conta> contas = contaRepository.getContasByFilters(dataVencimento, descricao);
         return contas.stream().map(ContaDTO::convert).collect(Collectors.toList());
+    }
+
+    public ContaReportDTO getContaTotalByDate(LocalDate dataInicio, LocalDate dataFim)
+    {
+        return contaRepository.getContaTotalByDate(dataInicio, dataFim);
     }
 
     public Page<ContaDTO> getAll(Pageable page)
