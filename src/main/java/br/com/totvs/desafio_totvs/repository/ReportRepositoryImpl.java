@@ -54,16 +54,16 @@ public class ReportRepositoryImpl implements ReportRepository
 
     @Override
     public ContaReportDTO getContaTotalByDate(LocalDate dataInicio, LocalDate dataFim) {
-        String builder = "select sum(c.valor) from conta c " +
-                "where c.dataPagamento >= :dataInicio " +
-                "and c.dataPagamento <= :dataFim ";
+        String builder = "select sum(c.valor) from desafio.conta c " +
+                "where c.data_pagamento >= :dataInicio " +
+                "and c.data_pagamento <= :dataFim ";
 
         Query query = entityManager.createNativeQuery(builder);
         query.setParameter("dataInicio", dataInicio);
         query.setParameter("dataFim", dataFim);
-        Object []result = (Object[]) query.getSingleResult();
+        Object result = (Object) query.getSingleResult();
         ContaReportDTO contaReportDTO = new ContaReportDTO();
-        contaReportDTO.setTotal((BigDecimal) result[0]);
+        contaReportDTO.setTotal((BigDecimal) result);
         return contaReportDTO;
     }
 }
