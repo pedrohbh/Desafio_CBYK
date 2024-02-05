@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,7 +20,8 @@ public class ContaDTO
     private LocalDate dataPagamento;
     private BigDecimal valor;
     private String descricao;
-    private SituacaoContaDTO situacaoContaDTO;
+    private SituacaoContaDTO situacaoConta;
+    private LocalDateTime dataCadastro;
 
     public static ContaDTO convert(Conta conta)
     {
@@ -27,9 +29,10 @@ public class ContaDTO
         contaDTO.setDataVencimento(conta.getDataVencimento());
         contaDTO.setDataPagamento(conta.getDataPagamento());
         contaDTO.setDescricao(conta.getDescricao());
+        contaDTO.setDataCadastro(conta.getDataCadastro());
         if ( conta.getSituacaoConta() != null )
         {
-            contaDTO.setSituacaoContaDTO(SituacaoContaDTO.convert(conta.getSituacaoConta()));
+            contaDTO.setSituacaoConta(SituacaoContaDTO.convert(conta.getSituacaoConta()));
         }
         return contaDTO;
     }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ContaService
 {
-    private ContaRepository contaRepository;
+    private final ContaRepository contaRepository;
 
     public Page<ContaDTO> getAll(Pageable page)
     {
@@ -27,6 +28,7 @@ public class ContaService
 
     public ContaDTO save(ContaDTO contaDTO)
     {
+        contaDTO.setDataCadastro(LocalDateTime.now());
         Conta conta = contaRepository.save(Conta.convert(contaDTO));
         return  ContaDTO.convert(conta);
     }
@@ -54,9 +56,9 @@ public class ContaService
         {
             conta.setDataVencimento(contaDTO.getDataVencimento());
         }
-        if (contaDTO.getSituacaoContaDTO() != null && (contaDTO.getSituacaoContaDTO().getId() >= 1 && contaDTO.getSituacaoContaDTO().getId() <= 3))
+        if (contaDTO.getSituacaoConta() != null && (contaDTO.getSituacaoConta().getId() >= 1 && contaDTO.getSituacaoConta().getId() <= 3))
         {
-            conta.setSituacaoConta(SituacaoConta.convert(contaDTO.getSituacaoContaDTO()));
+            conta.setSituacaoConta(SituacaoConta.convert(contaDTO.getSituacaoConta()));
         }
         if ( contaDTO.getValor() != null)
         {

@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,6 +25,7 @@ public class Conta
     private LocalDate dataPagamento;
     private BigDecimal valor;
     private String descricao;
+    private LocalDateTime dataCadastro;
 
     @ManyToOne
     @JoinColumn(name = "situacao_conta_id")
@@ -35,9 +37,10 @@ public class Conta
         conta.setDataPagamento(contaDTO.getDataPagamento());
         conta.setValor(contaDTO.getValor());
         conta.setDescricao(contaDTO.getDescricao());
-        if ( contaDTO.getSituacaoContaDTO() != null )
+        conta.setDataCadastro(contaDTO.getDataCadastro());
+        if ( contaDTO.getSituacaoConta() != null )
         {
-            conta.setSituacaoConta(SituacaoConta.convert(contaDTO.getSituacaoContaDTO()));
+            conta.setSituacaoConta(SituacaoConta.convert(contaDTO.getSituacaoConta()));
         }
         return conta;
     }
