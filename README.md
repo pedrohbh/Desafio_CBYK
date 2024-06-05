@@ -13,7 +13,7 @@ Necessário ter:
 ### Passos de execução
 1 - Clone o projeto para o seu computador;
 ```
-git clone https://github.com/pedrohbh/ruptiva.git
+git clone https://github.com/pedrohbh/desafio_totvs.git
 ```
 
 2 - Dentro da raíz do projeto, execute o "maven clean install" para instalar as dependências do projeto, rodar os testes e compilar;

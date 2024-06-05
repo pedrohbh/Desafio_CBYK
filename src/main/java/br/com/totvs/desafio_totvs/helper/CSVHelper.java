@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,24 +21,20 @@ import java.util.List;
 public class CSVHelper
 {
     public static String TYPE = "text/csv";
-    static String[] HEADERS = { "data_vencimento", "data_pagamento", "valor", "descricao", "situacao_conta_id" };
+    //static String[] HEADERS = { "data_vencimento", "data_pagamento", "valor", "descricao", "situacao_conta_id" };
 
     public static boolean hasCSVFormat(MultipartFile file) {
 
-        if (!TYPE.equals(file.getContentType())) {
-            return false;
-        }
-
-        return true;
+        return TYPE.equals(file.getContentType());
     }
 
     public static List<Conta> csvToTutorials(InputStream is) {
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader,
-                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());)
+                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim()))
         {
 
-            List<Conta> contas = new ArrayList<Conta>();
+            List<Conta> contas = new ArrayList<>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
@@ -58,7 +55,7 @@ public class CSVHelper
 
             return contas;
         } catch (IOException e) {
-            throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
+            throw new RuntimeException("Erro ao parsear arquivo CSV: " + e.getMessage());
         }
     }
 
