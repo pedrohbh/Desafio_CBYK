@@ -36,9 +36,9 @@ public class ContaController
     }
 
     @GetMapping("/status/{statusId}")
-    public List<ContaDTO> buscaPorStatusConta(@PathVariable Short statusId)
+    public Page<ContaDTO> buscaPorStatusConta(@PathVariable Short statusId, Pageable page)
     {
-        return contaService.getContasBySituacaoContaId(statusId);
+        return contaService.getContasBySituacaoContaId(statusId, page);
     }
 
     @DeleteMapping("/{id}")
@@ -78,7 +78,7 @@ public class ContaController
     }
 
     @GetMapping("/total")
-    public ContaReportDTO getTotalPorData(@RequestParam(name = "dataInicio", required=true) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio, @RequestParam(name = "dataFim", required=true)@DateTimeFormat(pattern = "dd/MM/yyyy")LocalDate dataFim)
+    public ContaReportDTO getTotalPorData(@RequestParam(name = "dataInicio") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio, @RequestParam(name = "dataFim") @DateTimeFormat(pattern = "dd/MM/yyyy")LocalDate dataFim)
     {
         return contaService.getContaTotalByDate(dataInicio, dataFim);
     }

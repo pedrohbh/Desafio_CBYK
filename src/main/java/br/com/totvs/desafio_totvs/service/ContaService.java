@@ -71,10 +71,10 @@ public class ContaService
         return  ContaDTO.convert(conta);
     }
 
-    public List<ContaDTO> getContasBySituacaoContaId(short situacaoContaId)
+    public Page<ContaDTO> getContasBySituacaoContaId(short situacaoContaId, Pageable page)
     {
-        List<Conta> contas = contaRepository.getContasBySituacaoConta(situacaoContaId);
-        return contas.stream().map(ContaDTO::convert).collect(Collectors.toList());
+        Page<Conta> contas = contaRepository.getContasBySituacaoConta(situacaoContaId, page);
+        return contas.map(ContaDTO::convert);
     }
 
     public ContaDTO findContaById(long id)
