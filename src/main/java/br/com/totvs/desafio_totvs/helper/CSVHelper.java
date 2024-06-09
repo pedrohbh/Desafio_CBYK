@@ -21,7 +21,6 @@ import java.util.List;
 public class CSVHelper
 {
     public static String TYPE = "text/csv";
-    //static String[] HEADERS = { "data_vencimento", "data_pagamento", "valor", "descricao", "situacao_conta_id" };
 
     public static boolean hasCSVFormat(MultipartFile file) {
 
