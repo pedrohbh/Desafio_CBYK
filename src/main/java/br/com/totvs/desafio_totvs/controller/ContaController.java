@@ -80,7 +80,7 @@ public class ContaController
     @GetMapping("/total")
     public ContaReportDTO getTotalPorData(@RequestParam(name = "dataInicio") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio, @RequestParam(name = "dataFim") @DateTimeFormat(pattern = "dd/MM/yyyy")LocalDate dataFim)
     {
-        return contaService.getContaTotalByDateAntigo(dataInicio, dataFim);
+        return contaService.getTotalByDateRange(dataInicio, dataFim);
     }
 
     @PostMapping("/upload")
