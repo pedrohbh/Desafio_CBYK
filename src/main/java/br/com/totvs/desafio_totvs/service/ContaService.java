@@ -7,13 +7,16 @@ import br.com.totvs.desafio_totvs.model.Conta;
 import br.com.totvs.desafio_totvs.model.SituacaoConta;
 import br.com.totvs.desafio_totvs.repository.ContaRepository;
 import br.com.totvs.desafio_totvs.repository.SituacaoContaRepository;
+import br.com.totvs.desafio_totvs.specification.ContaSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,7 +56,18 @@ public class ContaService
         return contas.stream().map(ContaDTO::convert).collect(Collectors.toList());
     }
 
-    public ContaReportDTO getContaTotalByDate(LocalDate dataInicio, LocalDate dataFim)
+    public ContaReportDTO getTotalByDateRange(LocalDate startDate, LocalDate endDate) {
+        Specification<Conta> spec = ContaSpecification.hasDateBetween(startDate, endDate);
+        List<Conta> contas = contaRepository.findAll(spec);
+        BigDecimal result = contas.stream()
+                .map(Conta::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        ContaReportDTO contaReportDTO = new ContaReportDTO();
+        contaReportDTO.setTotal(result);
+        return contaReportDTO;
+    }
+
+    public ContaReportDTO getContaTotalByDateAntigo(LocalDate dataInicio, LocalDate dataFim)
     {
         return contaRepository.getContaTotalByDate(dataInicio, dataFim);
     }
