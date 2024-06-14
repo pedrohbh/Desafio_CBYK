@@ -2,6 +2,7 @@ package br.com.totvs.desafio_totvs;
 
 import br.com.totvs.desafio_totvs.controller.ContaController;
 import br.com.totvs.desafio_totvs.dto.ContaDTO;
+import br.com.totvs.desafio_totvs.dto.ContaReportDTO;
 import br.com.totvs.desafio_totvs.model.Conta;
 import br.com.totvs.desafio_totvs.model.SituacaoConta;
 import br.com.totvs.desafio_totvs.service.ContaService;
@@ -12,10 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
@@ -24,16 +23,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ContaControllerTest
-{
+public class ContaControllerTest {
     @InjectMocks
     private ContaController contaController;
     @Mock
@@ -49,34 +48,20 @@ public class ContaControllerTest
     }
 
     @Test
-    public void testListContas() throws Exception
-    {
+    public void testGetConta() throws Exception {
         List<ContaDTO> contas = new ArrayList<>();
         contas.add(ContaDTO.convert(ContaControllerTest.getConta(1L, "Compras", 150, (short) 1)));
         contas.add(ContaDTO.convert(ContaControllerTest.getConta(2L, "Viagem", 200, (short) 2)));
-        contas.add(ContaDTO.convert(ContaControllerTest.getConta(3L, "Impostos", 200, (short)3)));
+        contas.add(ContaDTO.convert(ContaControllerTest.getConta(3L, "Impostos", 200, (short) 3)));
 
-
-        MvcResult result = mockMvc.perform(get("/contas/2").with(user("user"))).andExpect(status().isOk()).andReturn();
-    }
-
-    @Test
-    public void testGetConta() throws Exception
-    {
-        List<ContaDTO> contas = new ArrayList<>();
-        contas.add(ContaDTO.convert(ContaControllerTest.getConta(1L, "Compras", 150, (short) 1)));
-        contas.add(ContaDTO.convert(ContaControllerTest.getConta(2L, "Viagem", 200, (short) 2)));
-        contas.add(ContaDTO.convert(ContaControllerTest.getConta(3L, "Impostos", 200, (short)3)));
-
-        Mockito.when(contaService.findContaById(2)).thenReturn(contas.get(1));
+        when(contaService.findContaById(2)).thenReturn(contas.get(1));
 
 
         mockMvc.perform(get("/contas/2").with(user("user"))).andExpect(status().isOk()).andExpect(content().string(containsString("Viagem")));
     }
 
     @Test
-    public void testSaveConta() throws Exception
-    {
+    public void testSaveConta() throws Exception {
         List<ContaDTO> contas = new ArrayList<>();
         contas.add(ContaDTO.convert(ContaControllerTest.getConta(15L, "Compras Novas", 150, (short) 1)));
 
@@ -84,10 +69,33 @@ public class ContaControllerTest
         mockMvc.perform(post("/contas").with(user("user")).contentType("application/json").content(objectMapper.writeValueAsString(contas.get(0)))).andExpect(status().isOk());
     }
 
+    @Test
+    public void testGetContasByFilter() throws Exception {
+        when(contaService.getContasByFilter(LocalDate.of(2024, 6, 5), "example")).thenReturn(emptyList());
+
+        mockMvc.perform(get("/contas/search")
+                        .param("dataVencimento", "05/06/2024")
+                        .param("descricao", "example"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    public void testGetTotalPorData() throws Exception {
+        ContaReportDTO reportDTO = new ContaReportDTO();
+        reportDTO.setTotal(BigDecimal.valueOf(1000.00));
+
+        when(contaService.getTotalByDateRange(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31))).thenReturn(reportDTO);
+
+        mockMvc.perform(get("/contas/total")
+                        .param("dataInicio", "01/01/2024")
+                        .param("dataFim", "31/12/2024"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(1000.00));
+    }
 
 
-    public static Conta getConta(long id, String descricao, double valor, short categoriaId)
-    {
+    public static Conta getConta(long id, String descricao, double valor, short categoriaId) {
         Conta conta = new Conta();
         conta.setId(id);
         conta.setDataCadastro(LocalDateTime.now());
@@ -102,4 +110,6 @@ public class ContaControllerTest
         conta.setDescricao(descricao);
         return conta;
     }
+
+
 }
