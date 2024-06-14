@@ -1,7 +1,7 @@
-# Desafio Totvs
+# Desafio CBYK
 
 ## Introdução
-Este projeto é a solução resposta para o desafio Totvs Backend, disponível em PDF neste repositório
+Este projeto é a solução resposta para o desafio CBYK Backend, disponível em PDF neste repositório
 
 ## Forma de Execução
 ### Requisitos
@@ -13,7 +13,7 @@ Necessário ter:
 ### Passos de execução
 1 - Clone o projeto para o seu computador;
 ```
-git clone https://github.com/pedrohbh/desafio_totvs.git
+git clone [https://github.com/pedrohbh/desafio_totvs.git](https://github.com/pedrohbh/Desafio_CBYK.git)
 ```
 
 2 - Dentro da raíz do projeto, execute o "maven clean install" para instalar as dependências do projeto, rodar os testes e compilar;
