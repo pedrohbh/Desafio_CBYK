@@ -1,7 +1,7 @@
 # Desafio CBYK
 
 ## Introdução
-Este projeto é a solução resposta para o desafio CBYK Backend, disponível em PDF neste repositório
+Este projeto é a solução resposta para o desafio Totvs/CBYK Backend, disponível em PDF neste repositório
 
 ## Forma de Execução
 ### Requisitos
