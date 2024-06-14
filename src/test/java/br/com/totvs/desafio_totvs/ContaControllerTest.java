@@ -26,6 +26,7 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,6 +40,22 @@ public class ContaControllerTest {
     private ContaService contaService;
     private ObjectMapper objectMapper;
     private MockMvc mockMvc;
+
+    public static Conta getConta(long id, String descricao, double valor, short categoriaId) {
+        Conta conta = new Conta();
+        conta.setId(id);
+        conta.setDataCadastro(LocalDateTime.now());
+        conta.setDataPagamento(LocalDateTime.now().plusDays(10).toLocalDate());
+        conta.setDataVencimento(LocalDate.now().plusMonths(4));
+
+        SituacaoConta situacaoConta = new SituacaoConta();
+        situacaoConta.setId(categoriaId);
+
+        conta.setSituacaoConta(situacaoConta);
+        conta.setValor(BigDecimal.valueOf(valor));
+        conta.setDescricao(descricao);
+        return conta;
+    }
 
     @BeforeEach
     public void setup() {
@@ -70,14 +87,27 @@ public class ContaControllerTest {
     }
 
     @Test
+    public void testBuscaContaPorId() throws Exception {
+        ContaDTO contaDTO = new ContaDTO();
+        contaDTO.setId(1L);
+
+        when(contaService.findContaById(1L)).thenReturn(contaDTO);
+
+        mockMvc.perform(get("/contas/1")).andExpect(status().isOk()).andExpect(jsonPath("$.id").value(1L));
+    }
+
+    @Test
+    public void testExcluiConta() throws Exception {
+        doNothing().when(contaService).delete(1L);
+
+        mockMvc.perform(delete("/contas/1")).andExpect(status().isNoContent());
+    }
+
+    @Test
     public void testGetContasByFilter() throws Exception {
         when(contaService.getContasByFilter(LocalDate.of(2024, 6, 5), "example")).thenReturn(emptyList());
 
-        mockMvc.perform(get("/contas/search")
-                        .param("dataVencimento", "05/06/2024")
-                        .param("descricao", "example"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
+        mockMvc.perform(get("/contas/search").param("dataVencimento", "05/06/2024").param("descricao", "example")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -87,28 +117,7 @@ public class ContaControllerTest {
 
         when(contaService.getTotalByDateRange(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31))).thenReturn(reportDTO);
 
-        mockMvc.perform(get("/contas/total")
-                        .param("dataInicio", "01/01/2024")
-                        .param("dataFim", "31/12/2024"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.total").value(1000.00));
-    }
-
-
-    public static Conta getConta(long id, String descricao, double valor, short categoriaId) {
-        Conta conta = new Conta();
-        conta.setId(id);
-        conta.setDataCadastro(LocalDateTime.now());
-        conta.setDataPagamento(LocalDateTime.now().plusDays(10).toLocalDate());
-        conta.setDataVencimento(LocalDate.now().plusMonths(4));
-
-        SituacaoConta situacaoConta = new SituacaoConta();
-        situacaoConta.setId(categoriaId);
-
-        conta.setSituacaoConta(situacaoConta);
-        conta.setValor(BigDecimal.valueOf(valor));
-        conta.setDescricao(descricao);
-        return conta;
+        mockMvc.perform(get("/contas/total").param("dataInicio", "01/01/2024").param("dataFim", "31/12/2024")).andExpect(status().isOk()).andExpect(jsonPath("$.total").value(1000.00));
     }
 
 
