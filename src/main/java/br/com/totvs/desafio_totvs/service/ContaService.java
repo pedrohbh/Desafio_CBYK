@@ -36,6 +36,17 @@ public class ContaService
         conta.ifPresent(contaRepository::delete);
     }
 
+    public List<ContaDTO> getContasByFilters(LocalDate vencimentoDate, String descricao) {
+        Specification<Conta> spec = Specification.where(ContaSpecification.hasVencimentoDate(vencimentoDate));
+
+        if (descricao != null && !descricao.isEmpty()) {
+            spec = spec.and(ContaSpecification.descricaoContains(descricao));
+        }
+
+        List<Conta> contas = contaRepository.findAll(spec);
+        return contas.stream().map(ContaDTO::convert).collect(Collectors.toList());
+    }
+
     public List<ContaDTO> saveByCSV(MultipartFile file)
     {
         try
@@ -50,11 +61,11 @@ public class ContaService
     }
 
 
-    public List<ContaDTO> getContasByFilter(LocalDate dataVencimento, String descricao)
+    /*public List<ContaDTO> getContasByFilter(LocalDate dataVencimento, String descricao)
     {
         List<Conta> contas = contaRepository.getContasByFilters(dataVencimento, descricao);
         return contas.stream().map(ContaDTO::convert).collect(Collectors.toList());
-    }
+    }*/
 
     public ContaReportDTO getTotalByDateRange(LocalDate startDate, LocalDate endDate) {
         Specification<Conta> spec = ContaSpecification.hasDateBetween(startDate, endDate);
@@ -67,10 +78,10 @@ public class ContaService
         return contaReportDTO;
     }
 
-    public ContaReportDTO getContaTotalByDateAntigo(LocalDate dataInicio, LocalDate dataFim)
+    /*public ContaReportDTO getContaTotalByDateAntigo(LocalDate dataInicio, LocalDate dataFim)
     {
         return contaRepository.getContaTotalByDate(dataInicio, dataFim);
-    }
+    }*/
 
     public Page<ContaDTO> getAll(Pageable page)
     {

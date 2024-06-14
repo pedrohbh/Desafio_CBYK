@@ -23,7 +23,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doNothing;
@@ -105,8 +104,6 @@ public class ContaControllerTest {
 
     @Test
     public void testGetContasByFilter() throws Exception {
-        when(contaService.getContasByFilter(LocalDate.of(2024, 6, 5), "example")).thenReturn(emptyList());
-
         mockMvc.perform(get("/contas/search").param("dataVencimento", "05/06/2024").param("descricao", "example")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
     }
 

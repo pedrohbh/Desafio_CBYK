@@ -68,13 +68,9 @@ public class ContaController
 
 
     @GetMapping("/search")
-    public List<ContaDTO> getContasByFilter(@RequestParam(name = "dataVencimento", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataVencimento, @RequestParam(name = "descricao", required = false) String descricao)
+    public List<ContaDTO> getContasByFilter(@RequestParam(name = "dataVencimento") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataVencimento, @RequestParam(name = "descricao", required = false) String descricao)
     {
-        if ( dataVencimento == null && descricao == null)
-        {
-            return  null;
-        }
-        return contaService.getContasByFilter(dataVencimento, descricao);
+        return contaService.getContasByFilters(dataVencimento, descricao);
     }
 
     @GetMapping("/total")
